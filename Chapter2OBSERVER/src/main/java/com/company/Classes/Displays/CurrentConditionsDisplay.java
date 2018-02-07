@@ -1,15 +1,20 @@
 package com.company.Classes.Displays;
 
+import com.company.Classes.Weather.WeatherData;
 import com.company.Interfaces.DisplayElement;
-import com.company.Interfaces.Observer;
+
+import java.util.Observable;
+import java.util.Observer;
 import com.company.Interfaces.Subject;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class CurrentConditionsDisplay implements Observer, DisplayElement {
+    Observable observable;
     private float temperature, humidity;
 
-    public CurrentConditionsDisplay(Subject weatherData) {
-        weatherData.registerObserver(this);
+    public CurrentConditionsDisplay(Observable observable) {
+        this.observable = observable;
+        observable.addObserver(this);
     }
 
     public void display() {
@@ -20,9 +25,12 @@ public class CurrentConditionsDisplay implements Observer, DisplayElement {
     }
 
     @Override
-    public void update(float temp, float humidity, float pressure) {
-        this.temperature = temp;
-        this.humidity = humidity;
-        display();
+    public void update(Observable obs, Object arg) {
+        if(obs instanceof WeatherData) {
+            WeatherData weatherData = (WeatherData)obs;
+            this.temperature = weatherData.getTemperature();
+            this.humidity = weatherData.getHumidity();
+            display();
+        }
     }
 }
