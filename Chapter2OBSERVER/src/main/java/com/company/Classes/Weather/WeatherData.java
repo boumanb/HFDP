@@ -26,10 +26,31 @@ public class WeatherData extends Observable{
 
     public void refreshMeasurements() throws UnirestException {
         JSONObject liveWeather = this.weatherGetter.getJsonResponse();
-        this.temperature = Float.parseFloat(liveWeather.getString("temp"));
-        this.humidity = Float.parseFloat(liveWeather.getString("lv"));
-        this.pressure = Float.parseFloat(liveWeather.getString("luchtd"));
-        measurementChanged();
+
+        float temp = Float.parseFloat(liveWeather.getString("temp"));
+        float humidity = Float.parseFloat(liveWeather.getString("lv"));
+        float airpressure = Float.parseFloat(liveWeather.getString("luchtd"));
+        boolean changes = false;
+
+        if (this.temperature != temp) {
+            this.temperature = temp;
+            changes = true;
+        }
+
+        if (this.humidity != humidity) {
+            this.humidity = humidity;
+            changes = true;
+        }
+
+        if (this.pressure != airpressure) {
+            this.pressure = airpressure;
+            changes = true;
+        }
+        
+        if (changes) {
+            measurementChanged();
+        }
+
     }
 
     public void autoRefresh(int delay, int period) {
@@ -41,23 +62,8 @@ public class WeatherData extends Observable{
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
     public float getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(float humidity) {
-        this.humidity = humidity;
-    }
-
-    public float getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(float pressure) {
-        this.pressure = pressure;
-    }
 }
