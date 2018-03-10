@@ -5,7 +5,7 @@ public class Light {
         System.out.println("Light went on");
     }
 
-    void off(){
+    public void off(){
         System.out.println("Light went off");
     }
 }

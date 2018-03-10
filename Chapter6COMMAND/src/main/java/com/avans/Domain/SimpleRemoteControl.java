@@ -1,4 +1,4 @@
-package com.avans;
+package com.avans.Domain;
 
 import com.avans.Interface.Command;
 
